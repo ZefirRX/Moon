@@ -15,6 +15,11 @@ public:
     explicit LoginWindows(QWidget *parent = nullptr);
     ~LoginWindows();
 
+private slots:
+    void on_EditTag_cursorPositionChanged(int arg1, int arg2);
+
+    void on_pushButton_clicked();
+
 private:
     Ui::LoginWindows *ui;
 };
