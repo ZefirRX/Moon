@@ -17,6 +17,9 @@ public:
     explicit aftwindow(QWidget *parent = nullptr);
     ~aftwindow() override;
 
+private slots:
+    void on_ButtonAftor_clicked();
+
 private:
     Ui::aftwindow *ui;
 };

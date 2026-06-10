@@ -1,31 +1,369 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
-<class>aftwindow</class>
-<widget class="QMainWindow" name="aftwindow">
+ <class>aftwindow</class>
+ <widget class="QMainWindow" name="aftwindow">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>900</width>
+    <height>500</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Окно авторизации</string>
   </property>
-  <widget class="QWidget" name="centralwidget"/>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>800</width>
-     <height>25</height>
-    </rect>
-   </property>
+  <property name="windowIcon">
+   <iconset theme="QIcon::ThemeIcon::DocumentSend"/>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QWidget" name="leftPanel" native="true">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>350</width>
+      <height>520</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: #050512;
+border: none;</string>
+    </property>
+    <widget class="QLineEdit" name="Line">
+     <property name="geometry">
+      <rect>
+       <x>349</x>
+       <y>0</y>
+       <width>2</width>
+       <height>520</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: #1D1D38;</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="logoLable">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>160</y>
+       <width>101</width>
+       <height>91</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="Moon_icon.qrc">:/moon_icon.png</pixmap>
+     </property>
+    </widget>
+    <widget class="QLabel" name="labelNameProg">
+     <property name="geometry">
+      <rect>
+       <x>110</x>
+       <y>240</y>
+       <width>120</width>
+       <height>40</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Lucida Fax</family>
+       <pointsize>20</pointsize>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: #FFFFF0;</string>
+     </property>
+     <property name="text">
+      <string>Moon</string>
+     </property>
+     <property name="textFormat">
+      <enum>Qt::TextFormat::AutoText</enum>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>70</x>
+       <y>280</y>
+       <width>200</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Lucida Fax</family>
+       <pointsize>9</pointsize>
+       <italic>true</italic>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: #6F6F9D;</string>
+     </property>
+     <property name="text">
+      <string>Мессенджер локальной сети</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignCenter</set>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="rightPanel" native="true">
+    <property name="geometry">
+     <rect>
+      <x>351</x>
+      <y>0</y>
+      <width>550</width>
+      <height>520</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: #0A0A1D;
+border: none;</string>
+    </property>
+    <widget class="QLabel" name="LabelTitle">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>110</y>
+       <width>261</width>
+       <height>50</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Lucida Fax</family>
+       <pointsize>22</pointsize>
+       <italic>false</italic>
+       <bold>false</bold>
+       <kerning>true</kerning>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: white;</string>
+     </property>
+     <property name="text">
+      <string>Добро пожаловать!</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="LabelUnderTitel">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>150</y>
+       <width>300</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: #6F6F9D;</string>
+     </property>
+     <property name="text">
+      <string>Войдите в свой аккаунт</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="EditTag">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>180</y>
+       <width>450</width>
+       <height>50</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLineEdit {
+    background-color: #11112A;
+    border: 1px solid #2C2C55;
+    border-radius: 8px;
+    color: white;
+    padding-left: 10px;
+}</string>
+     </property>
+     <property name="placeholderText">
+      <string>🔖 Уникальный Тэг</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="EditPassword">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>240</y>
+       <width>450</width>
+       <height>50</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLineEdit {
+    background-color: #11112A;
+    border: 1px solid #2C2C55;
+    border-radius: 8px;
+    color: white;
+    padding-left: 10px;
+}</string>
+     </property>
+     <property name="placeholderText">
+      <string>🔒 Пароль</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="ButtonAftor">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>300</y>
+       <width>450</width>
+       <height>55</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>13</pointsize>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+    background-color: #5A5AF0;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+}
+QPushButton:hover {
+    background-color: #6B6BF5;
+}
+QPushButton:pressed {
+    background-color: #4A4AD0;
+}</string>
+     </property>
+     <property name="text">
+      <string>Войти</string>
+     </property>
+    </widget>
+
+    <!-- ========== ДОБАВЛЕННЫЙ БЛОК С ЛИНИЯМИ И ТЕКСТОМ "или" ========== -->
+
+    <!-- Левая линия -->
+    <widget class="QFrame" name="leftLine">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>380</y>
+       <width>190</width>
+       <height>1</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: #2C2C55;</string>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::HLine</enum>
+     </property>
+    </widget>
+
+    <!-- Текст "или" -->
+    <widget class="QLabel" name="orLabel">
+     <property name="geometry">
+      <rect>
+       <x>235</x>
+       <y>370</y>
+       <width>80</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>11</pointsize>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: #6F6F9D;
+background-color: transparent;
+font-family: 'Segoe UI', Arial, sans-serif;</string>
+     </property>
+     <property name="text">
+      <string>или</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignCenter</set>
+     </property>
+    </widget>
+
+    <!-- Правая линия -->
+    <widget class="QFrame" name="rightLine">
+     <property name="geometry">
+      <rect>
+       <x>320</x>
+       <y>380</y>
+       <width>170</width>
+       <height>1</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: #2C2C55;</string>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::HLine</enum>
+     </property>
+    </widget>
+
+    <widget class="QLabel" name="LabelGoToAfter">
+     <property name="geometry">
+      <rect>
+       <x>140</x>
+       <y>410</y>
+       <width>270</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::LayoutDirection::LeftToRight</enum>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: #FFFFF0;
+font-size: 12px;</string>
+     </property>
+     <property name="text">
+      <string>Нет аккаунта? &lt;a href=&quot;#&quot; style=&quot;color:#7C6CFF; text-decoration: none;&quot;&gt;Создать&lt;/a&gt;</string>
+     </property>
+     <property name="textFormat">
+      <enum>Qt::TextFormat::RichText</enum>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignCenter</set>
+     </property>
+     <property name="openExternalLinks">
+      <bool>false</bool>
+     </property>
+    </widget>
+
+    <!-- ========== КОНЕЦ ДОБАВЛЕННОГО БЛОКА ========== -->
+
+   </widget>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
  </widget>
- <resources/>
+ <resources>
+  <include location="Moon_icon.qrc"/>
+ </resources>
  <connections/>
 </ui>
