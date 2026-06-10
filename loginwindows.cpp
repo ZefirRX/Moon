@@ -1,6 +1,6 @@
 #include "loginwindows.h"
 #include "ui_loginwindows.h"
-#include "mainwindow.h"
+#include "aftwindow.h"
 
 LoginWindows::LoginWindows(QWidget *parent) :
     QDialog(parent),
@@ -21,9 +21,9 @@ void LoginWindows::on_EditTag_cursorPositionChanged(int arg1, int arg2)
 }
 
 
-void LoginWindows::on_pushButton_clicked()
+void LoginWindows::on_ButtonRegister_clicked()
 {
-    MainWindow *window = new MainWindow();
+    aftwindow *window = new aftwindow();
     window -> show();
     close();
 }

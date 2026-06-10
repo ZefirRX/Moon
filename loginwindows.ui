@@ -51,17 +51,17 @@ border: none;</string>
    <widget class="QLabel" name="logoLable">
     <property name="geometry">
      <rect>
-      <x>125</x>
-      <y>140</y>
+      <x>120</x>
+      <y>160</y>
       <width>101</width>
-      <height>101</height>
+      <height>91</height>
      </rect>
     </property>
     <property name="text">
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap>C:/Users/cmena/Downloads/moon_circle.png</pixmap>
+     <pixmap resource="Moon_icon.qrc">:/moon_icon.png</pixmap>
     </property>
    </widget>
    <widget class="QLabel" name="labelNameProg">
@@ -79,6 +79,9 @@ border: none;</string>
       <pointsize>20</pointsize>
       <bold>true</bold>
      </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: #FFFFF0;</string>
     </property>
     <property name="text">
      <string>Moon</string>
@@ -304,6 +307,9 @@ border: none;</string>
     <property name="layoutDirection">
      <enum>Qt::LayoutDirection::LeftToRight</enum>
     </property>
+    <property name="styleSheet">
+     <string notr="true">color: #FFFFF0;</string>
+    </property>
     <property name="text">
      <string>Уже есть аккаунт? &lt;a href=&quot;#&quot; style=&quot;color:#7C6CFF;&quot;&gt;Войти&lt;/a&gt;</string>
     </property>
@@ -319,6 +325,8 @@ border: none;</string>
    </widget>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="Moon_icon.qrc"/>
+ </resources>
  <connections/>
 </ui>
