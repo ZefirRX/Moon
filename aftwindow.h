@@ -18,6 +18,9 @@ public:
     ~aftwindow() override;
 
 private slots:
+    void openloginwindow(const QString &link);
+
+private slots:
     void on_ButtonAftor_clicked();
 
 private:

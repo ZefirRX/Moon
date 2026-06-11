@@ -204,7 +204,7 @@ border: none;</string>
 }</string>
     </property>
     <property name="placeholderText">
-     <string>👤 Ник</string>
+     <string> Ник</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="EditTag">
@@ -226,7 +226,7 @@ border: none;</string>
 }</string>
     </property>
     <property name="placeholderText">
-     <string>🔖Уникальный Тэг</string>
+     <string>Уникальный Тэг</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="EditPassword">
@@ -248,7 +248,7 @@ border: none;</string>
 }</string>
     </property>
     <property name="placeholderText">
-     <string>🔒 Пароль</string>
+     <string>Пароль</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="EditRepeatPassword">
@@ -270,7 +270,7 @@ border: none;</string>
 }</string>
     </property>
     <property name="placeholderText">
-     <string>🔐 Повторите пароль</string>
+     <string>Повторите пароль</string>
     </property>
    </widget>
    <widget class="QPushButton" name="ButtonRegister">
@@ -311,7 +311,7 @@ border: none;</string>
      <string notr="true">color: #FFFFF0;</string>
     </property>
     <property name="text">
-     <string>Уже есть аккаунт? &lt;a href=&quot;#&quot; style=&quot;color:#7C6CFF;&quot;&gt;Войти&lt;/a&gt;</string>
+     <string>Уже есть аккаунт? &lt;a href=&quot;aftwin&quot; style=&quot;color:#7C6CFF;&quot;&gt;Войти&lt;/a&gt;</string>
     </property>
     <property name="textFormat">
      <enum>Qt::TextFormat::RichText</enum>
@@ -320,7 +320,7 @@ border: none;</string>
      <set>Qt::AlignmentFlag::AlignCenter</set>
     </property>
     <property name="openExternalLinks">
-     <bool>true</bool>
+     <bool>false</bool>
     </property>
    </widget>
   </widget>

@@ -53,4 +53,8 @@ Moon — это базовый десктопный мессенджер с гр
 | **Обновление визуала**                   | Более интересный подход к работе с дизайном приложения и тд                  |
 | **Сборка в полноценную социальную сеть** | Дуров вернул стену, но в Moon.                                               |
 
+## User Flow
 ![alt text](image.png)
+
+## WireFrame (ссылка на figma)
+https://www.figma.com/design/MUX4qpjdbKPiEJsOFhjkBA/moon-base?node-id=0-1&m=dev&t=O2pvc6Qse0fm9pIs-1

@@ -16,8 +16,10 @@ public:
     ~LoginWindows();
 
 private slots:
-    void on_EditTag_cursorPositionChanged(int arg1, int arg2);
+    void openaftwindow(const QString &link);
 
+private slots:
+    void on_EditTag_cursorPositionChanged(int arg1, int arg2);
     void on_ButtonRegister_clicked();
 
 private:
