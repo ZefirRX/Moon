@@ -1,6 +1,7 @@
 #include "loginwindows.h"
 #include "ui_loginwindows.h"
 #include "aftwindow.h"
+#include "homechats.h"
 
 LoginWindows::LoginWindows(QWidget *parent) :
     QDialog(parent),
@@ -32,7 +33,7 @@ void LoginWindows::openaftwindow(const QString &link)
 
 void LoginWindows::on_ButtonRegister_clicked()
 {
-    aftwindow *window = new aftwindow();
+    HomeChats *window = new HomeChats();
     window -> show();
     this -> close();
 }

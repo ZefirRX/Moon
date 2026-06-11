@@ -14,7 +14,10 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Chats</string>
+  </property>
+  <property name="windowIcon">
+   <iconset theme="applications-system"/>
   </property>
  </widget>
  <resources/>
