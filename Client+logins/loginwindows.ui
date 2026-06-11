@@ -282,6 +282,9 @@ border: none;</string>
       <height>45</height>
      </rect>
     </property>
+    <property name="cursor">
+     <cursorShape>PointingHandCursor</cursorShape>
+    </property>
     <property name="styleSheet">
      <string notr="true">QPushButton {
     background-color: #5A5AF0;
@@ -298,11 +301,14 @@ border: none;</string>
    <widget class="QLabel" name="LabelGoToAfter">
     <property name="geometry">
      <rect>
-      <x>140</x>
+      <x>200</x>
       <y>400</y>
-      <width>250</width>
+      <width>151</width>
       <height>30</height>
      </rect>
+    </property>
+    <property name="cursor">
+     <cursorShape>PointingHandCursor</cursorShape>
     </property>
     <property name="layoutDirection">
      <enum>Qt::LayoutDirection::LeftToRight</enum>

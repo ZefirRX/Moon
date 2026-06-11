@@ -2,7 +2,7 @@
 
 server::server()
 {
-    if(this -> listen(QHostAddress::Any, 2323)) // 1. Принимает сигналы с любого адреса 2. Порт прослушки
+    /*if(this -> listen(QHostAddress::Any, 2323)) // 1. Принимает сигналы с любого адреса 2. Порт прослушки
     {
         qDebug() << "ready to start";
     }
@@ -10,6 +10,14 @@ server::server()
     {
         qDebug() << errorString();
 
+    }*/
+    if (listen(QHostAddress::Any, 2323))
+    {
+        qDebug() << "ready to start";
+    }
+    else
+    {
+        qDebug() << "listen error:" << errorString();
     }
 }
 
@@ -35,6 +43,7 @@ void server::slotReadyRead()
         QString str;
         in >> str;
         qDebug() << str;
+        SendToClient(str);
     }
     else
     {
@@ -48,5 +57,9 @@ void server::SendToClient(QString str)
     QDataStream out(&Data, QIODevice::WriteOnly);
     out.setVersion(QDataStream::Qt_6_9);
     out << str;
-    socket -> write(Data);
+    //socket -> write(Data);
+    for (int i = 0; i < Sockets.size(); i++)
+    {
+        Sockets[i] -> write(Data);
+    }
 }
