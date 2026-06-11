@@ -31,6 +31,7 @@ void HomeChats::SendToServer(QString str)
     out.setVersion(QDataStream::Qt_6_9);
     out << str;
     socket -> write(Data);
+    ui -> lineEdit -> clear();
 }
 
 void HomeChats::slotReadyRead()
