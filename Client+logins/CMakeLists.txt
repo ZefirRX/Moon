@@ -25,6 +25,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ${PROJECT_SOURCES}
         loginwindows.h loginwindows.cpp loginwindows.ui
         Moon_icon.qrc
+        homechats.h homechats.cpp homechats.ui
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET Moon APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
