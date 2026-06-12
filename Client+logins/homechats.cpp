@@ -7,6 +7,9 @@ HomeChats::HomeChats(QWidget *parent)
 {
     ui->setupUi(this);
     socket = new QTcpSocket(this);
+    udpSocket = new QUdpSocket(this);
+    udpSocket -> bind(QHostAddress::Any, 0, QUdpSocket::ShareAddress);
+    connect(udpSocket, &QUdpSocket::readyRead, this, &HomeChats::serverFound);
     connect(socket, &QTcpSocket::readyRead, this, &HomeChats::slotReadyRead);
     connect(socket, &QTcpSocket::disconnected, socket, &QTcpSocket::deleteLater);
 }
@@ -16,12 +19,35 @@ HomeChats::~HomeChats()
     delete ui;
 }
 
+void HomeChats::findServer()
+{
+    QByteArray data = "MOON_DISCOVER";
+    udpSocket->writeDatagram(data, QHostAddress::Broadcast, 45454);
+    ui->textBrowser->append("Поиск сервера...");
+}
+
+void HomeChats::serverFound()
+{
+    while(udpSocket->hasPendingDatagrams())
+    {
+        QByteArray data;
+        data.resize(udpSocket->pendingDatagramSize());
+        QHostAddress serverIp;
+        quint16 port;
+        udpSocket->readDatagram(data.data(), data.size(), &serverIp, &port);
+        if(data == "MOON_SERVER")
+        {
+            ui->textBrowser->append("Сервер найден: " + serverIp.toString());
+            socket->connectToHost(serverIp, 2323);
+            return;
+        }
+    }
+}
 
 
 void HomeChats::on_ConnectToServer_clicked()
 {
-    socket -> connectToHost("127.0.0.1", 2323);
-
+    findServer();
 }
 
 void HomeChats::SendToServer(QString str)

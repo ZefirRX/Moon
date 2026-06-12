@@ -2,15 +2,6 @@
 
 server::server()
 {
-    /*if(this -> listen(QHostAddress::Any, 2323)) // 1. Принимает сигналы с любого адреса 2. Порт прослушки
-    {
-        qDebug() << "ready to start";
-    }
-    else
-    {
-        qDebug() << errorString();
-
-    }*/
     if (listen(QHostAddress::Any, 2323))
     {
         qDebug() << "ready to start";
@@ -19,6 +10,9 @@ server::server()
     {
         qDebug() << "listen error:" << errorString();
     }
+    udpSocket = new QUdpSocket(this);
+    udpSocket->bind( QHostAddress::Any, 45454, QUdpSocket::ShareAddress | QUdpSocket::ReuseAddressHint);
+    connect(udpSocket, &QUdpSocket::readyRead, this, &server::processDiscovery);
 }
 
 void server::incomingConnection(qintptr socketDescriptor)
@@ -61,5 +55,37 @@ void server::SendToClient(QString str)
     for (int i = 0; i < Sockets.size(); i++)
     {
         Sockets[i] -> write(Data);
+    }
+}
+
+void server::processDiscovery()
+{
+    while (udpSocket->hasPendingDatagrams())
+    {
+        QByteArray data;
+        data.resize(udpSocket->pendingDatagramSize());
+
+        QHostAddress sender;
+        quint16 senderPort;
+
+        udpSocket->readDatagram(
+            data.data(),
+            data.size(),
+            &sender,
+            &senderPort);
+
+        qDebug() << "UDP:" << data;
+
+        if(data == "MOON_DISCOVER")
+        {
+            QByteArray answer = "MOON_SERVER";
+
+            udpSocket->writeDatagram(
+                answer,
+                sender,
+                senderPort);
+
+            qDebug() << "Server found request from" << sender;
+        }
     }
 }

@@ -1,7 +1,8 @@
 #ifndef SERVER_H
 #define SERVER_H
 #include <QTcpServer>
-#include <QTcpSocket>
+#include <QTcpSocket> //Передача сообщений
+#include <QUdpSocket> // Связь с клиентом
 #include <QVector>
 
 class server : public QTcpServer
@@ -14,11 +15,13 @@ public:
 
 private:
     QVector <QTcpSocket*> Sockets;
+    QUdpSocket *udpSocket;
     QByteArray Data;
     void SendToClient(QString str);
 
 public slots:
     void incomingConnection(qintptr socketDescriptor);
     void slotReadyRead();
+    void processDiscovery();
 };
 #endif
