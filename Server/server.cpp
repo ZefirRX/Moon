@@ -1,7 +1,10 @@
 #include "server.h"
 
+
 server::server()
 {
+
+    database.open();
     if (listen(QHostAddress::Any, 2323))
     {
         qDebug() << "ready to start";
