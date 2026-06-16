@@ -1,9 +1,7 @@
 #include "server.h"
 
-
 server::server()
 {
-
     database.open();
     if (listen(QHostAddress::Any, 2323))
     {
@@ -29,6 +27,28 @@ void server::incomingConnection(qintptr socketDescriptor)
     qDebug() << "client connected" << socketDescriptor;
 }
 
+void server::SendToOne(QTcpSocket *target, QString str)
+{
+    Data.clear();
+    QDataStream out(&Data, QIODevice::WriteOnly);
+    out.setVersion(QDataStream::Qt_6_9);
+    out << str;
+    target -> write(Data);
+}
+
+void server::SendToClient(QString str)
+{
+    Data.clear();
+    QDataStream out(&Data, QIODevice::WriteOnly);
+    out.setVersion(QDataStream::Qt_6_9);
+    out << str;
+    for (int i = 0; i < Sockets.size(); i++)
+    {
+        Sockets[i] -> write(Data);
+    }
+}
+
+
 void server::slotReadyRead()
 {
     socket = (QTcpSocket*)sender();
@@ -39,6 +59,38 @@ void server::slotReadyRead()
         qDebug() << "ready...";
         QString str;
         in >> str;
+        int sep = str.indexOf('|');
+        QString command = (sep == -1) ? str : str.left(sep);
+        QString rest = (sep == -1) ? "" : str.mid(sep + 1);
+
+        if(command == "REG")
+        {
+            QStringList parts = rest.split('|');
+            QString nick = parts.value(0);
+            QString tag = parts.value(1);
+            QString password = parts.value(2);
+
+            if(database.registerUser(nick, tag, password))
+                SendToOne(socket, "REG_OK");
+            else
+                SendToOne(socket, "REG_FAIL");
+        }
+        else if(command == "LOGIN")
+        {
+            QStringList parts = rest.split('|');
+            QString tag = parts.value(0);
+            QString password = parts.value(1);
+            QString nick;
+
+            if(database.checkoutLogin(tag, password, nick))
+                SendToOne(socket, "LOGIN_OK|" + nick);
+            else
+                SendToOne(socket, "LOGIN_FAIL");
+        }
+        else if(command == "MSG")
+        {
+            SendToClient("MSG|" + rest);
+        }
         qDebug() << str;
         SendToClient(str);
     }
@@ -46,19 +98,7 @@ void server::slotReadyRead()
     {
         qDebug() << "DataStream Error";
     }
-}
 
-void server::SendToClient(QString str)
-{
-    Data.clear();
-    QDataStream out(&Data, QIODevice::WriteOnly);
-    out.setVersion(QDataStream::Qt_6_9);
-    out << str;
-    //socket -> write(Data);
-    for (int i = 0; i < Sockets.size(); i++)
-    {
-        Sockets[i] -> write(Data);
-    }
 }
 
 void server::processDiscovery()

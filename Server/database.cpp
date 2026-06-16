@@ -51,3 +51,19 @@ bool Database::registerUser(const QString& nickname, const QString& tag, const Q
     insert.addBindValue(password);
     return insert.exec();
 }
+
+bool Database::checkoutLogin(const QString& tag, const QString& password, QString& nickname)
+{
+    QSqlQuery query;
+    query.prepare("SELECT nickname FROM users " "WHERE tag = ? AND password = ?");
+    query.addBindValue(tag);
+    query.addBindValue(password);
+    if(!query.exec())
+        return false;
+    if(query.next())
+    {
+        nickname = query.value(0).toString();
+        return true;
+    }
+    return false;
+}

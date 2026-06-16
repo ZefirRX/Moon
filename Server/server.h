@@ -20,6 +20,7 @@ private:
     QByteArray Data;
     Database database;
     void SendToClient(QString str);
+    void SendToOne(QTcpSocket *target, QString str);
 
 public slots:
     void incomingConnection(qintptr socketDescriptor);
