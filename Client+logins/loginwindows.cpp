@@ -10,8 +10,7 @@ LoginWindows::LoginWindows(QWidget *parent) :
     ui->setupUi(this);
     setFixedSize(900, 500);
     ui->LabelGoToAfter->setText("Уже есть аккаунт? <a href=\"aftwin\" style=\"color:#7C6CFF;\">Войти</a>");
-    connect(ui->LabelGoToAfter, &QLabel::linkActivated,
-            this, &LoginWindows::openaftwindow);
+    connect(ui->LabelGoToAfter, &QLabel::linkActivated, this, &LoginWindows::openaftwindow);
 }
 
 LoginWindows::~LoginWindows()

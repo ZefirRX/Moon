@@ -2,8 +2,7 @@
 #define HOMECHATS_H
 
 #include <QWidget>
-#include <QTcpSocket> // Передача сообщений
-#include <QUdpSocket> // Подключение к серверу
+#include "connect.h"
 
 namespace Ui {
 class HomeChats;
@@ -18,21 +17,14 @@ public:
     ~HomeChats();
 
 private slots:
-    void on_ConnectToServer_clicked();
     void on_pushButton_clicked();
     void on_lineEdit_returnPressed();
 
 private:
     Ui::HomeChats *ui;
-    QTcpSocket *socket;
-    QUdpSocket *udpSocket;
-    QByteArray Data;
-    void SendToServer(QString str);
 
 public slots:
-    void slotReadyRead();
-    void findServer();
-    void serverFound();
+    void slotLogMessage(QString str);
 };
 
 #endif // HOMECHATS_H
