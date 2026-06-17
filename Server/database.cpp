@@ -33,8 +33,7 @@ bool Database::registerUser(const QString& nickname, const QString& tag, const Q
     QSqlQuery check;
 
     check.prepare("SELECT COUNT(*) FROM users "
-        "WHERE nickname = ? OR tag = ?");
-    check.addBindValue(nickname);
+        "WHERE tag = ?");
     check.addBindValue(tag);
 
     if(!check.exec())

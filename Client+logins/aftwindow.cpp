@@ -1,7 +1,8 @@
 #include "aftwindow.h"
 #include "ui_aftwindow.h"
 #include "loginwindows.h"
-#include  "homechats.h".h
+#include  "homechats.h"
+#include "QMessageBox"
 
 aftwindow::aftwindow(QWidget *parent)
     : QMainWindow(parent)
@@ -9,8 +10,8 @@ aftwindow::aftwindow(QWidget *parent)
 {
     ui->setupUi(this);
     ui->LabelGoToAfter->setText("Нет аккаунта? <a href=\"loginwin\" style=\"color:#7C6CFF;\">Cоздать</a>");
-    connect(ui->LabelGoToAfter, &QLabel::linkActivated,
-            this, &aftwindow::openloginwindow);
+    connect(ui->LabelGoToAfter, &QLabel::linkActivated,this, &aftwindow::openloginwindow);
+    connect(Connect::instance(), &Connect::loginResult, this, &aftwindow::SlotLoginResult);
 }
 
 aftwindow::~aftwindow()
@@ -27,9 +28,20 @@ void aftwindow::openloginwindow(const QString &link)
 
 void aftwindow::on_ButtonAftor_clicked()
 {
-    HomeChats *window = new HomeChats();
-    window -> show();
+    Connect::instance() -> SendLogin(ui->EditTag->text(), ui->EditPassword->text());
+}
 
-    close();
+void aftwindow::SlotLoginResult(bool ok, QString info)
+{
+    if(ok)
+    {
+        HomeChats *window = new HomeChats();
+        window -> show();
+        close();
+    }
+    else
+    {
+        QMessageBox::warning(this, "Ошибка входа", "Неверный тэг или пароль");
+    }
 }
 

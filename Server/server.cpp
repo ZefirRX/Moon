@@ -91,8 +91,6 @@ void server::slotReadyRead()
         {
             SendToClient("MSG|" + rest);
         }
-        qDebug() << str;
-        SendToClient(str);
     }
     else
     {

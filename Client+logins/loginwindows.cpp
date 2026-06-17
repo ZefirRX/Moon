@@ -1,6 +1,7 @@
 #include "loginwindows.h"
 #include "ui_loginwindows.h"
 #include "aftwindow.h"
+#include "QMessageBox"
 #include "homechats.h"
 
 LoginWindows::LoginWindows(QWidget *parent) :
@@ -11,6 +12,7 @@ LoginWindows::LoginWindows(QWidget *parent) :
     setFixedSize(900, 500);
     ui->LabelGoToAfter->setText("Уже есть аккаунт? <a href=\"aftwin\" style=\"color:#7C6CFF;\">Войти</a>");
     connect(ui->LabelGoToAfter, &QLabel::linkActivated, this, &LoginWindows::openaftwindow);
+    connect(Connect::instance(), &Connect::registerResult, this, &LoginWindows::SlotRegisterResualt);
 }
 
 LoginWindows::~LoginWindows()
@@ -32,8 +34,27 @@ void LoginWindows::openaftwindow(const QString &link)
 
 void LoginWindows::on_ButtonRegister_clicked()
 {
-    HomeChats *window = new HomeChats();
-    window -> show();
-    this -> close();
+    if(ui->EditPassword->text() != ui -> EditRepeatPassword -> text())
+    {
+        QMessageBox::warning(this, "Ошибка", "Пароли не совпадают");
+        return;
+    }
+    else
+    {
+        Connect::instance() ->  SendRegister(ui -> EditNick -> text(), ui -> EditTag -> text(), ui ->EditPassword->text());
+    }
 }
 
+void LoginWindows::SlotRegisterResualt(bool ok)
+{
+    if (ok)
+    {
+        HomeChats *window = new HomeChats();
+        window -> show();
+        this ->close();
+    }
+    else
+    {
+        QMessageBox::warning(this, "Ошибка регистрации", "Такой тэг уже занят");
+    }
+}

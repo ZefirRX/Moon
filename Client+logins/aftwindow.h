@@ -1,6 +1,6 @@
 #ifndef AFTWINDOW_H
 #define AFTWINDOW_H
-
+#include "connect.h"
 #include <QMainWindow>
 
 QT_BEGIN_NAMESPACE
@@ -16,14 +16,11 @@ class aftwindow : public QMainWindow
 public:
     explicit aftwindow(QWidget *parent = nullptr);
     ~aftwindow() override;
-
-private slots:
-    void openloginwindow(const QString &link);
-
-private slots:
-    void on_ButtonAftor_clicked();
-
 private:
     Ui::aftwindow *ui;
+private slots:
+    void on_ButtonAftor_clicked();
+    void SlotLoginResult(bool ok, QString info);
+    void openloginwindow(const QString &link);
 };
 #endif // AFTWINDOW_H
