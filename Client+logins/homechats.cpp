@@ -6,7 +6,7 @@ HomeChats::HomeChats(QWidget *parent)
     , ui(new Ui::HomeChats)
 {
     ui->setupUi(this);
-    connect(Connect::instance(), &Connect::logMessage, this, &HomeChats::slotLogMessage);
+    connect(Connect::instance(), &Connect::chatMessageReceived, this, &HomeChats::slotChatMessageReceived);
 }
 
 HomeChats::~HomeChats()
@@ -14,19 +14,20 @@ HomeChats::~HomeChats()
     delete ui;
 }
 
-void HomeChats::slotLogMessage(QString str)
+void HomeChats::slotChatMessageReceived(QString text)
 {
-    ui -> textBrowser ->append(str);
+    qDebug() << "HomeChats получил:" << text;
+    ui -> textBrowser ->append(text);
 }
 
 void HomeChats::on_pushButton_clicked()
 {
-    Connect::instance() -> SendToServer(ui->lineEdit->text());
+    Connect::instance() -> SendMessage(ui->lineEdit->text());
     ui -> lineEdit -> clear();
 }
 
 void HomeChats::on_lineEdit_returnPressed()
 {
-    Connect::instance() -> SendToServer(ui->lineEdit->text());
+    Connect::instance() -> SendMessage(ui->lineEdit->text());
     ui -> lineEdit -> clear();
 }
