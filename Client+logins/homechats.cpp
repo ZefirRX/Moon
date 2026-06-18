@@ -1,6 +1,6 @@
 #include "homechats.h"
 #include "ui_homechats.h"
-
+#include "QDateTime"
 HomeChats::HomeChats(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::HomeChats)
@@ -14,10 +14,9 @@ HomeChats::~HomeChats()
     delete ui;
 }
 
-void HomeChats::slotChatMessageReceived(QString text)
+void HomeChats::slotChatMessageReceived(QString nickname, QString time, QString text)
 {
-    qDebug() << "HomeChats получил:" << text;
-    ui -> textBrowser ->append(text);
+    ui -> textBrowser -> append("[" + time + "] <b>" + nickname.toHtmlEscaped() + ":</b> " + text.toHtmlEscaped());
 }
 
 void HomeChats::on_pushButton_clicked()

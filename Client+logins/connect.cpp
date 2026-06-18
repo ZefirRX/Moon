@@ -102,7 +102,17 @@ void Connect::slotReadyRead()
         // Вызов сигналов
         switch (code)
         {
-        case CmdMsg:       emit chatMessageReceived(rest); break;
+        case CmdMsg: {
+            int nameSep = rest.indexOf('|');
+            QString nickname = (nameSep == -1) ? "Unknown" : rest.left(nameSep);
+            QString afterName = (nameSep == -1) ? "" : rest.mid(nameSep + 1);
+
+            int timeSep = afterName.indexOf('|');
+            QString time = (timeSep == -1) ? "" : afterName.left(timeSep);
+            QString text = (timeSep == -1) ? afterName : afterName.mid(timeSep + 1);
+
+            emit chatMessageReceived(nickname, time, text);
+            break;}
         case CmdLoginOk:   emit loginResult(true, rest); break;
         case CmdLoginFail: emit loginResult(false, ""); break;
         case CmdRegOk:     emit registerResult(true); break;

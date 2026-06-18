@@ -19,6 +19,7 @@ private:
     QUdpSocket *udpSocket;
     QByteArray Data;
     Database database;
+    QMap<QTcpSocket*, QString> Nicknames;
     void SendToClient(QString str);
     void SendToOne(QTcpSocket *target, QString str);
 

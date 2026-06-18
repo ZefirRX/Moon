@@ -31,7 +31,7 @@ public slots:
 
 signals:
     void logMessage(QString str);
-    void chatMessageReceived(QString text);
+    void chatMessageReceived(QString nickname, QString time, QString text);
     void loginResult(bool ok, QString info);
     void registerResult(bool ok);
 };

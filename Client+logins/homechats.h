@@ -19,7 +19,7 @@ private:
     Ui::HomeChats *ui;
 
 public slots:
-    void slotChatMessageReceived(QString text);
+    void slotChatMessageReceived(QString nickname, QString time, QString text);
 
 private slots:
     void on_pushButton_clicked();

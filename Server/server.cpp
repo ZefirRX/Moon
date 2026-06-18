@@ -1,4 +1,5 @@
 #include "server.h"
+#include "QDateTime"
 
 server::server()
 {
@@ -71,7 +72,10 @@ void server::slotReadyRead()
             QString password = parts.value(2);
 
             if(database.registerUser(nick, tag, password))
+            {
+                Nicknames[socket] = nick;
                 SendToOne(socket, "REG_OK");
+            }
             else
                 SendToOne(socket, "REG_FAIL");
         }
@@ -83,13 +87,18 @@ void server::slotReadyRead()
             QString nick;
 
             if(database.checkoutLogin(tag, password, nick))
+            {
+                Nicknames[socket] = nick;
                 SendToOne(socket, "LOGIN_OK|" + nick);
+            }
             else
                 SendToOne(socket, "LOGIN_FAIL");
         }
         else if(command == "MSG")
         {
-            SendToClient("MSG|" + rest);
+            QString time = QDateTime::currentDateTime().toString("HH:mm");
+            QString nick = Nicknames.value(socket, "Unknown");
+            SendToClient("MSG|" + nick + "|" + time + "|" + rest);
         }
     }
     else
