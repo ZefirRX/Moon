@@ -57,7 +57,6 @@ void server::slotReadyRead()
     in.setVersion(QDataStream::Qt_6_9);
     if(in.status() == QDataStream::Ok)
     {
-        qDebug() << "ready...";
         QString str;
         in >> str;
         int sep = str.indexOf('|');

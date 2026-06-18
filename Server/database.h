@@ -9,7 +9,7 @@ public:
     bool open();
     bool registerUser(const QString& nickname, const QString& tag,const QString& password);
     bool checkoutLogin(const QString& tag, const QString& password, QString& nickname);
-
+    QString hash;
 private:
     QSqlDatabase db;
 };

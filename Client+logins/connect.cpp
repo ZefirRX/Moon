@@ -1,4 +1,5 @@
 #include "connect.h"
+#include <QCryptographicHash>
 
 Connect* Connect::connectInstance = nullptr;
 
@@ -80,7 +81,6 @@ void Connect::slotReadyRead()
     {
         QString str;
         in >> str;
-        qDebug() << "Connect получил:" << str;
         int sep = str.indexOf('|');
         QString commandStr = (sep == -1) ? str : str.left(sep);
         QString rest = (sep == -1) ? "" : str.mid(sep + 1);

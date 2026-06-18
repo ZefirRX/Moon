@@ -2,6 +2,7 @@
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QDebug>
+#include <QCryptographicHash>
 
 Database::Database()
 {
@@ -45,9 +46,12 @@ bool Database::registerUser(const QString& nickname, const QString& tag, const Q
 
     insert.prepare("INSERT INTO users(nickname, tag, password) "
         "VALUES(?,?,?)");
+    QByteArray hash = QCryptographicHash::hash(password.toUtf8(), QCryptographicHash::Sha256);
+    // Получаем шестнадцатеричную строку
+    QString BinaritiInSix = hash.toHex();
     insert.addBindValue(nickname);
     insert.addBindValue(tag);
-    insert.addBindValue(password);
+    insert.addBindValue(BinaritiInSix);
     return insert.exec();
 }
 
@@ -56,7 +60,9 @@ bool Database::checkoutLogin(const QString& tag, const QString& password, QStrin
     QSqlQuery query;
     query.prepare("SELECT nickname FROM users " "WHERE tag = ? AND password = ?");
     query.addBindValue(tag);
-    query.addBindValue(password);
+    QByteArray hash = QCryptographicHash::hash(password.toUtf8(), QCryptographicHash::Sha256);
+    QString BinaritiInSix = hash.toHex();
+    query.addBindValue(BinaritiInSix);
     if(!query.exec())
         return false;
     if(query.next())

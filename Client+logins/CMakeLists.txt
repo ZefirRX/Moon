@@ -27,6 +27,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         Moon_icon.qrc
         homechats.h homechats.cpp homechats.ui
         connect.h connect.cpp
+        utils.h
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET Moon APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

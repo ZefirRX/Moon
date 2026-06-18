@@ -2,6 +2,7 @@
 #include "ui_aftwindow.h"
 #include "loginwindows.h"
 #include  "homechats.h"
+#include "utils.h"
 #include "QMessageBox"
 
 aftwindow::aftwindow(QWidget *parent)
@@ -28,6 +29,11 @@ void aftwindow::openloginwindow(const QString &link)
 
 void aftwindow::on_ButtonAftor_clicked()
 {
+    if(isBlank(ui->EditTag->text()) || isBlank(ui->EditPassword->text()))
+    {
+        QMessageBox::warning(this, "Ошибка", "Заполните тэг и пароль");
+        return;
+    }
     Connect::instance() -> SendLogin(ui->EditTag->text(), ui->EditPassword->text());
 }
 

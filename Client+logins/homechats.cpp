@@ -21,12 +21,20 @@ void HomeChats::slotChatMessageReceived(QString nickname, QString time, QString 
 
 void HomeChats::on_pushButton_clicked()
 {
-    Connect::instance() -> SendMessage(ui->lineEdit->text());
+    QString text = ui->lineEdit->text().trimmed();
+    if(text.isEmpty())
+        return;
+
+    Connect::instance() -> SendMessage(text);
     ui -> lineEdit -> clear();
 }
 
 void HomeChats::on_lineEdit_returnPressed()
 {
-    Connect::instance() -> SendMessage(ui->lineEdit->text());
+    QString text = ui->lineEdit->text().trimmed();
+    if(text.isEmpty())
+        return;
+
+    Connect::instance() -> SendMessage(text);
     ui -> lineEdit -> clear();
 }

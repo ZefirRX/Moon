@@ -2,6 +2,7 @@
 #include "ui_loginwindows.h"
 #include "aftwindow.h"
 #include "QMessageBox"
+#include "utils.h"
 #include "homechats.h"
 
 LoginWindows::LoginWindows(QWidget *parent) :
@@ -37,6 +38,11 @@ void LoginWindows::on_ButtonRegister_clicked()
     if(ui->EditPassword->text() != ui -> EditRepeatPassword -> text())
     {
         QMessageBox::warning(this, "Ошибка", "Пароли не совпадают");
+        return;
+    }
+    else if (isBlank(ui->EditTag->text()) || isBlank(ui->EditPassword->text()))
+    {
+        QMessageBox::warning(this, "Ошибка", "Заполните тэг и пароль");
         return;
     }
     else
