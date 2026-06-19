@@ -1,12 +1,15 @@
 #include "homechats.h"
 #include "ui_homechats.h"
 #include "QDateTime"
+
 HomeChats::HomeChats(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::HomeChats)
 {
     ui->setupUi(this);
     connect(Connect::instance(), &Connect::chatMessageReceived, this, &HomeChats::slotChatMessageReceived);
+    connect(Connect::instance(), &Connect::usersListReceived, this, &HomeChats::slotUsersListReceived);
+    Connect::instance()->sendGetUsers();
 }
 
 HomeChats::~HomeChats()
@@ -37,4 +40,12 @@ void HomeChats::on_lineEdit_returnPressed()
 
     Connect::instance() -> SendMessage(text);
     ui -> lineEdit -> clear();
+}
+
+void HomeChats::slotUsersListReceived(QStringList nicknames)
+{
+    for(const QString &nick : nicknames)
+    {
+        ui->chatList->addItem(nick);
+    }
 }

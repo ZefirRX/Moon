@@ -65,16 +65,6 @@ border: none;</string>
         <string>Общий чат</string>
        </property>
       </item>
-      <item>
-       <property name="text">
-        <string>Alex</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Egor</string>
-       </property>
-      </item>
      </widget>
      <widget class="QWidget" name="chatArea" native="true">
       <layout class="QVBoxLayout" name="chatAreaLayout">

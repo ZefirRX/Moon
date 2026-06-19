@@ -3,6 +3,7 @@
 #include <QSqlError>
 #include <QDebug>
 #include <QCryptographicHash>
+#include <QStringList>
 
 Database::Database()
 {
@@ -71,4 +72,15 @@ bool Database::checkoutLogin(const QString& tag, const QString& password, QStrin
         return true;
     }
     return false;
+}
+
+QStringList Database::getAllNicknames()
+{
+    QStringList result;
+    QSqlQuery query("SELECT nickname FROM users");
+    while(query.next())
+    {
+        result << query.value(0).toString();
+    }
+    return result;
 }

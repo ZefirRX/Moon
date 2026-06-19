@@ -22,10 +22,20 @@ void server::incomingConnection(qintptr socketDescriptor)
     socket = new QTcpSocket;
     socket -> setSocketDescriptor(socketDescriptor);
     connect(socket, &QTcpSocket::readyRead, this, &server::slotReadyRead);
+    connect(socket, &QTcpSocket::disconnected, this, &server::slotDisconnected);
     connect(socket, &QTcpSocket::disconnected, socket, &QTcpSocket::deleteLater);
-
     Sockets.push_back(socket);
     qDebug() << "client connected" << socketDescriptor;
+}
+
+void server::slotDisconnected()
+{
+    QTcpSocket *disconnectedSocket = (QTcpSocket*)sender();
+
+    Sockets.removeAll(disconnectedSocket);
+    Nicknames.remove(disconnectedSocket);
+
+    qDebug() << "client disconnected";
 }
 
 void server::SendToOne(QTcpSocket *target, QString str)
@@ -98,6 +108,11 @@ void server::slotReadyRead()
             QString time = QDateTime::currentDateTime().toString("HH:mm");
             QString nick = Nicknames.value(socket, "Unknown");
             SendToClient("MSG|" + nick + "|" + time + "|" + rest);
+        }
+        else if(command == "GET_USERS")
+        {
+            QStringList nicknames = database.getAllNicknames();
+            SendToOne(socket, "USERS|" + nicknames.join(","));
         }
     }
     else

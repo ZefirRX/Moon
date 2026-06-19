@@ -27,5 +27,6 @@ public slots:
     void incomingConnection(qintptr socketDescriptor);
     void slotReadyRead();
     void processDiscovery();
+    void slotDisconnected();
 };
 #endif

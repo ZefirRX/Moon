@@ -16,14 +16,14 @@ public:
         void SendLogin(QString tag, QString password);
         void SendRegister(QString nickname, QString tag, QString password);
         void SendMessage(QString text);
-
+    void sendGetUsers();
 private:
     explicit Connect(QObject *parent = nullptr);
     QUdpSocket *udpSocket;
     QByteArray Data;
     static Connect *connectInstance;
-    enum CommandCode { CmdMsg, CmdLoginOk, CmdLoginFail, CmdRegOk, CmdRegFail };
-        void SendToServer(QString str);
+    enum CommandCode { CmdMsg, CmdLoginOk, CmdLoginFail, CmdRegOk, CmdRegFail, CmdUsers };
+    void SendToServer(QString str);
 
 public slots:
     void slotReadyRead();
@@ -34,6 +34,7 @@ signals:
     void chatMessageReceived(QString nickname, QString time, QString text);
     void loginResult(bool ok, QString info);
     void registerResult(bool ok);
+    void usersListReceived(QStringList nicknames);
 };
 
 #endif // CONNECT_H

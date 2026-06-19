@@ -70,8 +70,6 @@ void Connect::SendLogin(QString tag, QString password)
     SendToServer("LOGIN|" + tag + "|" + password);
 }
 
-\
-
 void Connect::slotReadyRead()
 {
 
@@ -93,13 +91,12 @@ void Connect::slotReadyRead()
             {"LOGIN_OK",   CmdLoginOk},
             {"LOGIN_FAIL", CmdLoginFail},
             {"REG_OK",     CmdRegOk},
-            {"REG_FAIL",   CmdRegFail}
+            {"REG_FAIL",   CmdRegFail},
+            {"USERS", CmdUsers}
         };
 
         //  Ищем команду в словаре. Если не нашли вернули -1
-        int code = commandMap.value(commandStr, -1);
-
-        // Вызов сигналов
+        int code = commandMap.value(commandStr, -1); // Вызов сигналов
         switch (code)
         {
         case CmdMsg: {
@@ -117,6 +114,12 @@ void Connect::slotReadyRead()
         case CmdLoginFail: emit loginResult(false, ""); break;
         case CmdRegOk:     emit registerResult(true); break;
         case CmdRegFail:   emit registerResult(false); break;
+        case CmdUsers:
+        {
+            QStringList nicknames = rest.split(',', Qt::SkipEmptyParts);
+            emit usersListReceived(nicknames);
+            break;
+        }
         default:           emit logMessage("Unknown command: " + commandStr); break;
         }
     }
@@ -124,4 +127,9 @@ void Connect::slotReadyRead()
     {
         emit logMessage("read Error");
     }
+}
+
+void Connect::sendGetUsers()
+{
+    SendToServer("GET_USERS");
 }
