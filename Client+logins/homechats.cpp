@@ -42,6 +42,13 @@ void HomeChats::on_lineEdit_returnPressed()
     ui -> lineEdit -> clear();
 }
 
+void HomeChats::on_chatList_itemClicked(QListWidgetItem *item)
+{
+    QString name = item->text();
+    currentChat = (name == "Общий чат") ? "" : name;
+    ui->chatTitle->setText(name);
+}
+
 void HomeChats::slotUsersListReceived(QStringList nicknames)
 {
     for(const QString &nick : nicknames)
