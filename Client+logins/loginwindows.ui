@@ -176,6 +176,7 @@ border: none;</string>
     <property name="font">
      <font>
       <pointsize>10</pointsize>
+      <bold>false</bold>
      </font>
     </property>
     <property name="styleSheet">
@@ -204,7 +205,7 @@ border: none;</string>
 }</string>
     </property>
     <property name="placeholderText">
-     <string> Ник</string>
+     <string>Уникальный Тэг</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="EditTag">
@@ -226,7 +227,7 @@ border: none;</string>
 }</string>
     </property>
     <property name="placeholderText">
-     <string>Уникальный Тэг</string>
+     <string>Ник</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="EditPassword">
