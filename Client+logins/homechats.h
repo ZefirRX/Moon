@@ -23,6 +23,7 @@ private:
 
 public slots:
     void slotChatMessageReceived(QString nickname, QString time, QString text);
+    void slotPrivateMessageReceived(QString nickname, QString time, QString text);
 
 private slots:
     void slotUsersListReceived(QStringList nickname);

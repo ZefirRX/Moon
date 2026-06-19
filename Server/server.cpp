@@ -114,6 +114,27 @@ void server::slotReadyRead()
             QStringList nicknames = database.getAllNicknames();
             SendToOne(socket, "USERS|" + nicknames.join(","));
         }
+        else if(command == "PM")
+        {
+            int sep2 = rest.indexOf('|');
+            QString receiverNick = (sep2 == -1) ? rest : rest.left(sep2);
+            QString text = (sep2 == -1) ? "" : rest.mid(sep2 + 1);
+
+            QTcpSocket *receiverSocket = Nicknames.key(receiverNick, nullptr);
+
+            if(receiverSocket != nullptr)
+            {
+                QString time = QDateTime::currentDateTime().toString("HH:mm");
+                QString fromNick = Nicknames.value(socket, "Unknown");
+
+                SendToOne(receiverSocket, "PM|" + fromNick + "|" + time + "|" + text);
+                SendToOne(socket, "PM|" + fromNick + "|" + time + "|" + text);
+            }
+            else
+            {
+                SendToOne(socket, "PM_FAIL|" + receiverNick);
+            }
+        }
     }
     else
     {

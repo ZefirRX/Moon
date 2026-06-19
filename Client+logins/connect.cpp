@@ -70,6 +70,11 @@ void Connect::SendLogin(QString tag, QString password)
     SendToServer("LOGIN|" + tag + "|" + password);
 }
 
+void Connect::sendPrivateMessage(QString receiver, QString text)
+{
+    SendToServer("PM|" + receiver + "|" + text);
+}
+
 void Connect::slotReadyRead()
 {
 
@@ -92,7 +97,10 @@ void Connect::slotReadyRead()
             {"LOGIN_FAIL", CmdLoginFail},
             {"REG_OK",     CmdRegOk},
             {"REG_FAIL",   CmdRegFail},
-            {"USERS", CmdUsers}
+            {"USERS", CmdUsers},
+            {"PM", CmdPm},
+            {"PM_FAIL", CmdPmFail}
+
         };
 
         //  Ищем команду в словаре. Если не нашли вернули -1
@@ -120,6 +128,22 @@ void Connect::slotReadyRead()
             emit usersListReceived(nicknames);
             break;
         }
+        case CmdPm:
+        {
+            int s1 = rest.indexOf('|');
+            QString nickname = (s1 == -1) ? "Unknown" : rest.left(s1);
+            QString afterName = (s1 == -1) ? "" : rest.mid(s1 + 1);
+
+            int s2 = afterName.indexOf('|');
+            QString time = (s2 == -1) ? "" : afterName.left(s2);
+            QString text = (s2 == -1) ? afterName : afterName.mid(s2 + 1);
+
+            emit privateMessageReceived(nickname, time, text);
+            break;
+        }
+        case CmdPmFail:
+            emit logMessage("Пользователь не в сети: " + rest);
+            break;
         default:           emit logMessage("Unknown command: " + commandStr); break;
         }
     }

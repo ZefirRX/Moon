@@ -9,6 +9,7 @@ HomeChats::HomeChats(QWidget *parent)
     ui->setupUi(this);
     connect(Connect::instance(), &Connect::chatMessageReceived, this, &HomeChats::slotChatMessageReceived);
     connect(Connect::instance(), &Connect::usersListReceived, this, &HomeChats::slotUsersListReceived);
+    connect(Connect::instance(), &Connect::privateMessageReceived, this, &HomeChats::slotPrivateMessageReceived);
     Connect::instance()->sendGetUsers();
 }
 
@@ -22,24 +23,28 @@ void HomeChats::slotChatMessageReceived(QString nickname, QString time, QString 
     ui -> textBrowser -> append("[" + time + "] <b>" + nickname.toHtmlEscaped() + ":</b> " + text.toHtmlEscaped());
 }
 
+void HomeChats::slotPrivateMessageReceived(QString nickname, QString time, QString text)
+{
+    ui -> textBrowser -> append("[ЛС " + time + "] <b>" + nickname.toHtmlEscaped() + ":</b> " + text.toHtmlEscaped());
+}
+
 void HomeChats::on_pushButton_clicked()
 {
     QString text = ui->lineEdit->text().trimmed();
     if(text.isEmpty())
         return;
 
-    Connect::instance() -> SendMessage(text);
+    if(currentChat.isEmpty())
+        Connect::instance() -> SendMessage(text);
+    else
+        Connect::instance() -> sendPrivateMessage(currentChat, text);
+
     ui -> lineEdit -> clear();
 }
 
 void HomeChats::on_lineEdit_returnPressed()
 {
-    QString text = ui->lineEdit->text().trimmed();
-    if(text.isEmpty())
-        return;
-
-    Connect::instance() -> SendMessage(text);
-    ui -> lineEdit -> clear();
+    on_pushButton_clicked();
 }
 
 void HomeChats::on_chatList_itemClicked(QListWidgetItem *item)
