@@ -75,21 +75,28 @@ void Connect::sendPrivateMessage(QString receiver, QString text)
     SendToServer("PM|" + receiver + "|" + text);
 }
 
+void Connect::sendGetOnline()
+{
+    SendToServer("GET_ONLINE");
+}
+
 void Connect::slotReadyRead()
 {
-
     QDataStream in(socket);
     in.setVersion(QDataStream::Qt_6_9);
-    if(in.status()==QDataStream::Ok)
+
+    while(socket->bytesAvailable() > 0)
     {
+        in.startTransaction();
         QString str;
         in >> str;
+
+        if(!in.commitTransaction())
+            break;
+
         int sep = str.indexOf('|');
         QString commandStr = (sep == -1) ? str : str.left(sep);
         QString rest = (sep == -1) ? "" : str.mid(sep + 1);
-
-        // Создаем и заполняем простой словарь строк и чисел
-        // статический (static), чтобы не пересоздавать его при каждом вызове
 
         static const QHash<QString, int> commandMap = {
             {"MSG",        CmdMsg},
@@ -97,59 +104,56 @@ void Connect::slotReadyRead()
             {"LOGIN_FAIL", CmdLoginFail},
             {"REG_OK",     CmdRegOk},
             {"REG_FAIL",   CmdRegFail},
-            {"USERS", CmdUsers},
-            {"PM", CmdPm},
-            {"PM_FAIL", CmdPmFail}
-
+            {"USERS",      CmdUsers},
+            {"PM",         CmdPm},
+            {"PM_FAIL",    CmdPmFail},
+            {"ONLINE",     CmdOnline}
         };
 
-        //  Ищем команду в словаре. Если не нашли вернули -1
-        int code = commandMap.value(commandStr, -1); // Вызов сигналов
+        int code = commandMap.value(commandStr, -1);
         switch (code)
         {
         case CmdMsg: {
             int nameSep = rest.indexOf('|');
             QString nickname = (nameSep == -1) ? "Unknown" : rest.left(nameSep);
             QString afterName = (nameSep == -1) ? "" : rest.mid(nameSep + 1);
-
             int timeSep = afterName.indexOf('|');
             QString time = (timeSep == -1) ? "" : afterName.left(timeSep);
             QString text = (timeSep == -1) ? afterName : afterName.mid(timeSep + 1);
-
             emit chatMessageReceived(nickname, time, text);
-            break;}
+            break;
+        }
         case CmdLoginOk:   emit loginResult(true, rest); break;
         case CmdLoginFail: emit loginResult(false, ""); break;
         case CmdRegOk:     emit registerResult(true); break;
         case CmdRegFail:   emit registerResult(false); break;
-        case CmdUsers:
-        {
+        case CmdUsers: {
             QStringList nicknames = rest.split(',', Qt::SkipEmptyParts);
             emit usersListReceived(nicknames);
             break;
         }
-        case CmdPm:
-        {
+        case CmdPm: {
             int s1 = rest.indexOf('|');
             QString nickname = (s1 == -1) ? "Unknown" : rest.left(s1);
             QString afterName = (s1 == -1) ? "" : rest.mid(s1 + 1);
-
             int s2 = afterName.indexOf('|');
             QString time = (s2 == -1) ? "" : afterName.left(s2);
             QString text = (s2 == -1) ? afterName : afterName.mid(s2 + 1);
-
             emit privateMessageReceived(nickname, time, text);
             break;
         }
         case CmdPmFail:
             emit logMessage("Пользователь не в сети: " + rest);
             break;
-        default:           emit logMessage("Unknown command: " + commandStr); break;
+        case CmdOnline: {
+            QStringList nicknames = rest.split(',', Qt::SkipEmptyParts);
+            emit onlineListReceived(nicknames);
+            break;
         }
-    }
-    else
-    {
-        emit logMessage("read Error");
+        default:
+            emit logMessage("Unknown command: " + commandStr);
+            break;
+        }
     }
 }
 

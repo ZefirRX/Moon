@@ -22,6 +22,7 @@ private:
     QMap<QTcpSocket*, QString> Nicknames;
     void SendToClient(QString str);
     void SendToOne(QTcpSocket *target, QString str);
+    void broadcastOnlineList();
 
 public slots:
     void incomingConnection(qintptr socketDescriptor);

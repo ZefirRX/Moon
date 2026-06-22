@@ -48,7 +48,7 @@ bool Database::registerUser(const QString& nickname, const QString& tag, const Q
     insert.prepare("INSERT INTO users(nickname, tag, password) "
         "VALUES(?,?,?)");
     QByteArray hash = QCryptographicHash::hash(password.toUtf8(), QCryptographicHash::Sha256);
-    // Получаем шестнадцатеричную строку
+    // Получаем шестнадцатеричную строку=
     QString BinaritiInSix = hash.toHex();
     insert.addBindValue(nickname);
     insert.addBindValue(tag);
