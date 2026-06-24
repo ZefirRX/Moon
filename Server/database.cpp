@@ -27,7 +27,63 @@ bool Database::open()
         "nickname TEXT UNIQUE,"
         "tag TEXT UNIQUE,"
         "password TEXT)");
+
+    query.exec("CREATE TABLE IF NOT EXISTS messages ("
+               "id       INTEGER PRIMARY KEY AUTOINCREMENT,"
+               "sender   TEXT,"
+               "receiver TEXT,"
+               "text     TEXT,"
+               "time     TEXT)");
     return true;
+}
+
+bool Database::saveMessage(const QString& sender, const QString& receiver, const QString& text, const QString& time)
+{
+    QSqlQuery query;
+    query.prepare("INSERT INTO messages(sender, receiver, text, time) "
+                  "VALUES(?,?,?,?)");
+    query.addBindValue(sender);
+    query.addBindValue(receiver);
+    query.addBindValue(text);
+    query.addBindValue(time);
+    return query.exec();
+}
+
+QList<QStringList> Database::getHistory(const QString& user1, const QString& user2)
+{
+    QList<QStringList> result;
+    QSqlQuery query;
+
+    if(user2.isEmpty())
+    {
+        query.prepare("SELECT sender, text, time FROM messages "
+                      "WHERE receiver = '' "
+                      "ORDER BY id ASC");
+    }
+    else
+    {
+        query.prepare("SELECT sender, text, time FROM messages "
+                      "WHERE (sender = ? AND receiver = ?) "
+                      "OR (sender = ? AND receiver = ?) "
+                      "ORDER BY id ASC");
+        query.addBindValue(user1);
+        query.addBindValue(user2);
+        query.addBindValue(user2);
+        query.addBindValue(user1);
+    }
+
+    if(!query.exec())
+        return result;
+
+    while(query.next())
+    {
+        QStringList row;
+        row << query.value(0).toString();
+        row << query.value(1).toString();
+        row << query.value(2).toString();
+        result << row;
+    }
+    return result;
 }
 
 bool Database::registerUser(const QString& nickname, const QString& tag, const QString& password)

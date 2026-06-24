@@ -19,12 +19,15 @@ public:
         void sendGetUsers();
         void sendGetOnline();
         void sendPrivateMessage(QString receiver, QString text);
+        void sendGetHistory();
+        void sendGetHistoryPm(QString nick);
 private:
     explicit Connect(QObject *parent = nullptr);
     QUdpSocket *udpSocket;
     QByteArray Data;
     static Connect *connectInstance;
-    enum CommandCode { CmdMsg, CmdLoginOk, CmdLoginFail, CmdRegOk, CmdRegFail, CmdUsers, CmdPm, CmdPmFail, CmdOnline };
+    enum CommandCode { CmdMsg, CmdLoginOk, CmdLoginFail, CmdRegOk, CmdRegFail, CmdUsers, CmdPm, CmdPmFail, CmdOnline, CmdHistory,
+                       CmdHistoryPm };
     void SendToServer(QString str);
 
 public slots:
@@ -39,6 +42,8 @@ signals:
     void usersListReceived(QStringList nicknames);
     void privateMessageReceived(QString nickname, QString time, QString text);
     void onlineListReceived(QStringList nicknames);
+    void historyReceived(QList<QStringList> messages);
+    void historyPmReceived(QString nick, QList<QStringList> messages);
 };
 
 #endif // CONNECT_H

@@ -116,6 +116,7 @@ void server::slotReadyRead()
             {
                 QString time = QDateTime::currentDateTime().toString("HH:mm");
                 QString nick = Nicknames.value(socket, "Unknown");
+                database.saveMessage(nick, "", rest, time);
                 SendToClient("MSG|" + nick + "|" + time + "|" + rest);
             }
             else if(command == "GET_USERS")
@@ -135,7 +136,7 @@ void server::slotReadyRead()
                 {
                     QString time = QDateTime::currentDateTime().toString("HH:mm");
                     QString fromNick = Nicknames.value(socket, "Unknown");
-
+                    database.saveMessage(fromNick, receiverNick, text, time);
                     SendToOne(receiverSocket, "PM|" + fromNick + "|" + time + "|" + text);
                     SendToOne(socket, "PM|" + fromNick + "|" + time + "|" + text);
                 }
@@ -148,6 +149,30 @@ void server::slotReadyRead()
             {
                 QStringList online = Nicknames.values();
                 SendToOne(socket, "ONLINE|" + online.join(","));
+            }
+            else if(command == "GET_HISTORY")
+            {
+                QString nick = Nicknames.value(socket, "");
+                QList<QStringList> history = database.getHistory(nick, "");
+
+                QString result;
+                for(const QStringList& row : history)
+                {
+                    result += row[0] + "~" + row[1] + "~" + row[2] + ";";
+                }
+                SendToOne(socket, "HISTORY|" + result);
+            }
+            else if(command == "GET_HISTORY_PM")
+            {
+                QString myNick = Nicknames.value(socket, "");
+                QList<QStringList> history = database.getHistory(myNick, rest);
+
+                QString result;
+                for(const QStringList& row : history)
+                {
+                    result += row[0] + "~" + row[1] + "~" + row[2] + ";";
+                }
+                SendToOne(socket, "HISTORY_PM|" + rest + "|" + result);
             }
         }
         else

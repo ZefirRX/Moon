@@ -3,6 +3,7 @@
 #include <QWidget>
 #include <QStringList>
 #include <QListWidgetItem>
+#include <QMap>
 #include "connect.h"
 
 namespace Ui {
@@ -20,6 +21,8 @@ public:
 private:
     Ui::HomeChats *ui;
     QString currentChat;
+    QMap<QString, QString> chatHistories;
+    QString formatMessage(const QString& nick, const QString& time, const QString& text);
 
 public slots:
     void slotChatMessageReceived(QString nickname, QString time, QString text);
@@ -31,6 +34,8 @@ private slots:
     void on_pushButton_clicked();
     void on_lineEdit_returnPressed();
     void on_chatList_itemClicked(QListWidgetItem *item);
+    void slotHistoryReceived(QList<QStringList> messages);
+    void slotHistoryPmReceived(QString nick, QList<QStringList> messages);
 };
 
 #endif // HOMECHATS_H

@@ -80,6 +80,16 @@ void Connect::sendGetOnline()
     SendToServer("GET_ONLINE");
 }
 
+void Connect::sendGetHistory()
+{
+    SendToServer("GET_HISTORY");
+}
+
+void Connect::sendGetHistoryPm(QString nick)
+{
+    SendToServer("GET_HISTORY_PM|" + nick);
+}
+
 void Connect::slotReadyRead()
 {
     QDataStream in(socket);
@@ -107,7 +117,9 @@ void Connect::slotReadyRead()
             {"USERS",      CmdUsers},
             {"PM",         CmdPm},
             {"PM_FAIL",    CmdPmFail},
-            {"ONLINE",     CmdOnline}
+            {"ONLINE",     CmdOnline},
+            {"HISTORY",    CmdHistory},
+            {"HISTORY_PM", CmdHistoryPm}
         };
 
         int code = commandMap.value(commandStr, -1);
@@ -148,6 +160,36 @@ void Connect::slotReadyRead()
         case CmdOnline: {
             QStringList nicknames = rest.split(',', Qt::SkipEmptyParts);
             emit onlineListReceived(nicknames);
+            break;
+        }
+        case CmdHistory:
+        {
+            QList<QStringList> messages;
+            QStringList rows = rest.split(';', Qt::SkipEmptyParts);
+            for(const QString& row : rows)
+            {
+                QStringList parts = row.split('~');
+                if(parts.size() == 3)
+                    messages << parts;
+            }
+            emit historyReceived(messages);
+            break;
+        }
+        case CmdHistoryPm:
+        {
+            int sep = rest.indexOf('|');
+            QString nick = (sep == -1) ? rest : rest.left(sep);
+            QString data = (sep == -1) ? "" : rest.mid(sep + 1);
+
+            QList<QStringList> messages;
+            QStringList rows = data.split(';', Qt::SkipEmptyParts);
+            for(const QString& row : rows)
+            {
+                QStringList parts = row.split('~');
+                if(parts.size() == 3)
+                    messages << parts;
+            }
+            emit historyPmReceived(nick, messages);
             break;
         }
         default:
