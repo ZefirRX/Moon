@@ -115,7 +115,8 @@ void Connect::slotReadyRead()
             {"REG_OK",     CmdRegOk},
             {"REG_FAIL",   CmdRegFail},
             {"USERS",      CmdUsers},
-            {"PM",         CmdPm},
+            {"PM_IN",  CmdPmIn},
+            {"PM_OUT", CmdPmOut},
             {"PM_FAIL",    CmdPmFail},
             {"ONLINE",     CmdOnline},
             {"HISTORY",    CmdHistory},
@@ -144,14 +145,53 @@ void Connect::slotReadyRead()
             emit usersListReceived(nicknames);
             break;
         }
-        case CmdPm: {
+        case CmdPmIn:
+        {
             int s1 = rest.indexOf('|');
-            QString nickname = (s1 == -1) ? "Unknown" : rest.left(s1);
-            QString afterName = (s1 == -1) ? "" : rest.mid(s1 + 1);
+            QString nickname =
+                (s1 == -1) ? "Unknown" : rest.left(s1);
+
+            QString afterName =
+                (s1 == -1) ? "" : rest.mid(s1 + 1);
+
             int s2 = afterName.indexOf('|');
-            QString time = (s2 == -1) ? "" : afterName.left(s2);
-            QString text = (s2 == -1) ? afterName : afterName.mid(s2 + 1);
-            emit privateMessageReceived(nickname, time, text);
+
+            QString time =
+                (s2 == -1) ? "" : afterName.left(s2);
+
+            QString text =
+                (s2 == -1) ? afterName : afterName.mid(s2 + 1);
+
+            emit privateMessageReceived(
+                nickname,
+                time,
+                text);
+
+            break;
+        }
+        case CmdPmOut:
+        {
+            int s1 = rest.indexOf('|');
+
+            QString receiver =
+                (s1 == -1) ? "Unknown" : rest.left(s1);
+
+            QString afterName =
+                (s1 == -1) ? "" : rest.mid(s1 + 1);
+
+            int s2 = afterName.indexOf('|');
+
+            QString time =
+                (s2 == -1) ? "" : afterName.left(s2);
+
+            QString text =
+                (s2 == -1) ? afterName : afterName.mid(s2 + 1);
+
+            emit privateMessageSent(
+                receiver,
+                time,
+                text);
+
             break;
         }
         case CmdPmFail:

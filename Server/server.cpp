@@ -136,9 +136,16 @@ void server::slotReadyRead()
                 {
                     QString time = QDateTime::currentDateTime().toString("HH:mm");
                     QString fromNick = Nicknames.value(socket, "Unknown");
+
                     database.saveMessage(fromNick, receiverNick, text, time);
-                    SendToOne(receiverSocket, "PM|" + fromNick + "|" + time + "|" + text);
-                    SendToOne(socket, "PM|" + fromNick + "|" + time + "|" + text);
+
+                    // получатель
+                    SendToOne(receiverSocket,
+                              "PM_IN|" + fromNick + "|" + time + "|" + text);
+
+                    // отправитель
+                    SendToOne(socket,
+                              "PM_OUT|" + receiverNick + "|" + time + "|" + text);
                 }
                 else
                 {

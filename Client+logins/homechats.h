@@ -30,6 +30,7 @@ public slots:
     void slotOnlineListReceived(QStringList nicknames);
 
 private slots:
+        void slotPrivateMessageSent(QString nickname, QString time, QString text);
     void slotUsersListReceived(QStringList nickname);
     void on_pushButton_clicked();
     void on_lineEdit_returnPressed();

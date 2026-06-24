@@ -26,7 +26,8 @@ private:
     QUdpSocket *udpSocket;
     QByteArray Data;
     static Connect *connectInstance;
-    enum CommandCode { CmdMsg, CmdLoginOk, CmdLoginFail, CmdRegOk, CmdRegFail, CmdUsers, CmdPm, CmdPmFail, CmdOnline, CmdHistory,
+    enum CommandCode { CmdMsg, CmdLoginOk, CmdLoginFail, CmdRegOk, CmdRegFail, CmdUsers, CmdPmIn,
+                       CmdPmOut, CmdPmFail, CmdOnline, CmdHistory,
                        CmdHistoryPm };
     void SendToServer(QString str);
 
@@ -35,6 +36,9 @@ public slots:
     void serverFound();
 
 signals:
+    void privateMessageSent(QString nickname, QString time, QString text);
+
+
     void logMessage(QString str);
     void chatMessageReceived(QString nickname, QString time, QString text);
     void loginResult(bool ok, QString info);

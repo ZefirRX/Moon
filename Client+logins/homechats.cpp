@@ -2,12 +2,6 @@
 #include "ui_homechats.h"
 #include "QDateTime"
 
-/**
- * @brief Класс для управления подключением к серверу.
- *
- * Отвечает за установку соединения, отправку запросов
- * и получение ответов от удалённого сервера.
- */
 HomeChats::HomeChats(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::HomeChats)
@@ -19,6 +13,7 @@ HomeChats::HomeChats(QWidget *parent)
     connect(Connect::instance(), &Connect::onlineListReceived, this, &HomeChats::slotOnlineListReceived);
     connect(Connect::instance(), &Connect::historyReceived, this, &HomeChats::slotHistoryReceived);
     connect(Connect::instance(), &Connect::historyPmReceived, this, &HomeChats::slotHistoryPmReceived);
+    connect(Connect::instance(), &Connect::privateMessageSent, this, &HomeChats::slotPrivateMessageSent);
     Connect::instance()->sendGetHistory();
     Connect::instance()->sendGetUsers();
     Connect::instance()->sendGetOnline();
@@ -68,13 +63,15 @@ void HomeChats::slotHistoryReceived(QList<QStringList> messages)
 void HomeChats::slotHistoryPmReceived(QString nick, QList<QStringList> messages)
 {
     QString html;
+
     for(const QStringList& row : messages)
     {
-        html += formatMessage(row[0], row[2], row[1]) + "<br>";
+        html += formatMessage( row[0], row[2],row[1]) + "<br>";
     }
+
     chatHistories[nick] = html;
 
-    //if(currentChat == nick)
+    if(currentChat == nick)
         ui->textBrowser->setHtml(html);
 }
 
@@ -115,6 +112,22 @@ void HomeChats::slotOnlineListReceived(QStringList nicknames)
             item->setForeground(QColor("#888888"));
         }
     }
+}
+
+void HomeChats::slotPrivateMessageSent(
+    QString nickname,
+    QString time,
+    QString text)
+{
+    QString line =
+        "[ЛС " + time + "] <b>Я:</b> " +
+        text.toHtmlEscaped() +
+        "<br>";
+
+    chatHistories[nickname] += line;
+
+    if(currentChat == nickname)
+        ui->textBrowser->append(line);
 }
 
 void HomeChats::on_chatList_itemClicked(QListWidgetItem *item)
